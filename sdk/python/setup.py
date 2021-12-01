@@ -47,7 +47,7 @@ setup(name='pulumi_picasso',
       install_requires=[
           'parver>=0.2.1',
           'pulumi>=3.0.0,<4.0.0',
-          'pulumi-sysdig@ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/python',
+          'pulumi_sysdig @ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/python',
           'semver>=2.8.1'
       ],
       zip_safe=False)
