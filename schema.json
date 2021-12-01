@@ -15,31 +15,13 @@
         }
     },
     "language": {
-        "csharp": {
-            "packageReferences": {
-                "Pulumi": "3.*",
-                "Pulumi.Aws": "4.*",
-                "Pulumi.Sysdig": "@ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/dotnet"
-            }
-        },
         "go": {
             "generateResourceContainerTypes": true,
             "importBasePath": "github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig/sdk/go/sysdig"
         },
-        "nodejs": {
-            "dependencies": {
-                "@pulumi/aws": "^4.0.0",
-                "@pulumi/sysdig": "@ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/nodejs"
-
-            },
-            "devDependencies": {
-                "typescript": "^3.7.0"
-            }
-        },
         "python": {
             "requires": {
                 "pulumi": ">=3.0.0,<4.0.0",
-                "pulumi-aws": ">=4.0.0,<5.0.0",
                 "pulumi-sysdig": "@ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/python"
             }
         }
