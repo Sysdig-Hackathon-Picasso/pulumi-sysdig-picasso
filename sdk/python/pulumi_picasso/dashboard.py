@@ -13,24 +13,24 @@ __all__ = ['DashboardArgs', 'Dashboard']
 @pulumi.input_type
 class DashboardArgs:
     def __init__(__self__, *,
-                 index_query: pulumi.Input[str]):
+                 dash_props: pulumi.Input[str]):
         """
         The set of arguments for constructing a Dashboard resource.
-        :param pulumi.Input[str] index_query: The PromQL query.
+        :param pulumi.Input[str] dash_props: The dashboard properties json.
         """
-        pulumi.set(__self__, "index_query", index_query)
+        pulumi.set(__self__, "dash_props", dash_props)
 
     @property
-    @pulumi.getter(name="indexQuery")
-    def index_query(self) -> pulumi.Input[str]:
+    @pulumi.getter(name="dashProps")
+    def dash_props(self) -> pulumi.Input[str]:
         """
-        The PromQL query.
+        The dashboard properties json.
         """
-        return pulumi.get(self, "index_query")
+        return pulumi.get(self, "dash_props")
 
-    @index_query.setter
-    def index_query(self, value: pulumi.Input[str]):
-        pulumi.set(self, "index_query", value)
+    @dash_props.setter
+    def dash_props(self, value: pulumi.Input[str]):
+        pulumi.set(self, "dash_props", value)
 
 
 class Dashboard(pulumi.ComponentResource):
@@ -38,13 +38,13 @@ class Dashboard(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 index_query: Optional[pulumi.Input[str]] = None,
+                 dash_props: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         """
         Create a Dashboard resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
-        :param pulumi.Input[str] index_query: The PromQL query.
+        :param pulumi.Input[str] dash_props: The dashboard properties json.
         """
         ...
     @overload
@@ -69,7 +69,7 @@ class Dashboard(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
-                 index_query: Optional[pulumi.Input[str]] = None,
+                 dash_props: Optional[pulumi.Input[str]] = None,
                  __props__=None):
         if opts is None:
             opts = pulumi.ResourceOptions()
@@ -84,9 +84,9 @@ class Dashboard(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = DashboardArgs.__new__(DashboardArgs)
 
-            if index_query is None and not opts.urn:
-                raise TypeError("Missing required property 'index_query'")
-            __props__.__dict__["index_query"] = index_query
+            if dash_props is None and not opts.urn:
+                raise TypeError("Missing required property 'dash_props'")
+            __props__.__dict__["dash_props"] = dash_props
         super(Dashboard, __self__).__init__(
             'picasso:index:Dashboard',
             resource_name,

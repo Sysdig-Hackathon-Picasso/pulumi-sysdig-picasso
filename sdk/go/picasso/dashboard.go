@@ -22,8 +22,8 @@ func NewDashboard(ctx *pulumi.Context,
 		return nil, errors.New("missing one or more required arguments")
 	}
 
-	if args.IndexQuery == nil {
-		return nil, errors.New("invalid value for required argument 'IndexQuery'")
+	if args.DashProps == nil {
+		return nil, errors.New("invalid value for required argument 'DashProps'")
 	}
 	var resource Dashboard
 	err := ctx.RegisterRemoteComponentResource("picasso:index:Dashboard", name, args, &resource, opts...)
@@ -34,14 +34,14 @@ func NewDashboard(ctx *pulumi.Context,
 }
 
 type dashboardArgs struct {
-	// The PromQL query.
-	IndexQuery string `pulumi:"indexQuery"`
+	// The dashboard properties json.
+	DashProps string `pulumi:"dashProps"`
 }
 
 // The set of arguments for constructing a Dashboard resource.
 type DashboardArgs struct {
-	// The PromQL query.
-	IndexQuery pulumi.StringInput
+	// The dashboard properties json.
+	DashProps pulumi.StringInput
 }
 
 func (DashboardArgs) ElementType() reflect.Type {

@@ -50,7 +50,7 @@ def _construct_dashboard(name: str,
     return provider.ConstructResult(
         urn=dashboard.urn,
         state={
-            "dashboard": dashboard.dashboard,
-            "alert": dashboard.alert
+            # "dashboard": dashboard.dashboard,
+            # "alert": dashboard.alert
         }
     )

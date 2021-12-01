@@ -3,26 +3,14 @@
     "resources": {
         "picasso:index:Dashboard": {
             "isComponent": true,
-            "dashProps": {
-                "conf": {
+            "inputProperties": {
+                "dashProps": {
                     "type": "string",
                     "description": "The dashboard properties json."
                 }
             },
             "requiredInputs": [
                 "dashProps"
-            ],
-            "properties": {
-                "dashboard": {
-                    "description": "The dashboard resource."
-                },
-
-                "alert": {
-                    "description": "The alert resource."
-                }
-            },
-            "required": [
-                "dashboard"
             ]
         }
     },

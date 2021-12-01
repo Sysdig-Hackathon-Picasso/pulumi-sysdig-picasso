@@ -22,40 +22,38 @@ import pulumi
 
 class DashboardArgs:
 
-    # dash_props: pulumi.Input[str]
-    # """The properties."""
-
-    dash_props = """
-    {
-        "name": "[P0] NATS Queue Backlog",
-        "description": "This is the alert/dashboard for NATS Queue Backlog",
-        "scope": "kubertnes.cluster.name in prod*",
-        "dashboard":[
-            {
-                "runbook": "# Runbook Title\nThis runbook describes something.",
-                "query": "pippo.pluto",
-                "threashold": "",
-                "unit": "percent"
-            }
-        ],
-        "alert": {
-            "query": "",
-            "duration": "",
-            "channels": [1,2,3],
-            "renotification_minutes": 10,
-            "severity": 4,
-            "trigger_after_minutes": 5,
-        }
-    }
-    """
+    dash_props: pulumi.Input[str]
+    """The properties."""
 
     @staticmethod
     def from_inputs(inputs: Inputs) -> 'DashboardArgs':
         return DashboardArgs(dash_props=inputs['dashProps'])
 
     def __init__(self, dash_props: pulumi.Input[str]) -> None:
-        self.dash_props = dash_props
-
+        # self.dash_props = dash_props
+        self.dash_props = """
+        {
+            "name": "[P0] NATS Queue Backlog",
+            "description": "This is the alert/dashboard for NATS Queue Backlog",
+            "scope": "kubertnes.cluster.name in prod*",
+            "dashboard":[
+                {
+                    "runbook": "# Runbook Title\nThis runbook describes something.",
+                    "query": "pippo.pluto",
+                    "threashold": "",
+                    "unit": "percent"
+                }
+            ],
+            "alert": {
+                "query": "",
+                "duration": "",
+                "channels": [1,2,3],
+                "renotification_minutes": 10,
+                "severity": 4,
+                "trigger_after_minutes": 5,
+            }
+        }
+        """
 
 class Dashboard(pulumi.ComponentResource):
     dashboard = None
@@ -112,8 +110,8 @@ class Dashboard(pulumi.ComponentResource):
         self.alert = alert
 
         self.register_outputs({
-            "dashboard": dashboard,
-            "alert": alert
+            # "dashboard": dashboard,
+            # "alert": alert
         })
 
     @staticmethod
