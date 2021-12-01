@@ -42,10 +42,6 @@ class Dashboard(pulumi.ComponentResource):
                  
         super().__init__('picasso:index:Dashboard', name, props, opts)
 
-        sysdig_monitor_url = "https://ec2-100-24-42-119.compute-1.amazonaws.com/"
-        sysdig_monitor_insecure_tls = True
-        sysdig_monitor_api_token = "9c0e2d3a-adac-482c-9fc1-11ee2c12f1e5"
-
         dashboard_panel_args = [ps.monitor.DashboardPanelArgs(
             name="testPanel",
             description="ciao descr",
@@ -56,7 +52,7 @@ class Dashboard(pulumi.ComponentResource):
             transparent_background=True,
             type="timechart",
             queries=[ps.monitor.DashboardPanelQueryArgs(
-                promql="pippo{id=pluto}",
+                promql=args.index_query,
                 unit="percent"
             )]
         )]
