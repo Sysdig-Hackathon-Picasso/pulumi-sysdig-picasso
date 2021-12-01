@@ -12,10 +12,10 @@ SCHEMA_PATH     := ${WORKING_DIR}/schema.json
 
 SRC             := provider/cmd/pulumi-resource-${PACK}
 
-generate:: gen_go_sdk gen_dotnet_sdk gen_nodejs_sdk gen_python_sdk
+generate:: gen_go_sdk gen_python_sdk #gen_dotnet_sdk gen_nodejs_sdk 
 
-build:: build_provider build_dotnet_sdk build_nodejs_sdk build_python_sdk
-install:: install_dotnet_sdk install_nodejs_sdk
+build:: build_provider build_python_sdk #build_dotnet_sdk build_nodejs_sdk 
+#install:: install_dotnet_sdk install_nodejs_sdk
 
 
 # Provider
@@ -55,39 +55,39 @@ gen_go_sdk::
 
 # .NET SDK
 
-gen_dotnet_sdk::
-	rm -rf sdk/dotnet
-	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
+# gen_dotnet_sdk::
+# 	rm -rf sdk/dotnet
+# 	cd provider/cmd/${CODEGEN} && go run . dotnet ../../../sdk/dotnet ${SCHEMA_PATH}
 
-build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
-build_dotnet_sdk:: gen_dotnet_sdk
-	cd sdk/dotnet/ && \
-		echo "${DOTNET_VERSION}" >version.txt && \
-		dotnet build /p:Version=${DOTNET_VERSION}
+# build_dotnet_sdk:: DOTNET_VERSION := ${VERSION}
+# build_dotnet_sdk:: gen_dotnet_sdk
+# 	cd sdk/dotnet/ && \
+# 		echo "${DOTNET_VERSION}" >version.txt && \
+# 		dotnet build /p:Version=${DOTNET_VERSION}
 
-install_dotnet_sdk:: build_dotnet_sdk
-	rm -rf ${WORKING_DIR}/nuget
-	mkdir -p ${WORKING_DIR}/nuget
-	find . -name '*.nupkg' -print -exec cp -p {} ${WORKING_DIR}/nuget \;
+# install_dotnet_sdk:: build_dotnet_sdk
+# 	rm -rf ${WORKING_DIR}/nuget
+# 	mkdir -p ${WORKING_DIR}/nuget
+# 	find . -name '*.nupkg' -print -exec cp -p {} ${WORKING_DIR}/nuget \;
 
 
 # Node.js SDK
 
-gen_nodejs_sdk::
-	rm -rf sdk/nodejs
-	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
+# gen_nodejs_sdk::
+# 	rm -rf sdk/nodejs
+# 	cd provider/cmd/${CODEGEN} && go run . nodejs ../../../sdk/nodejs ${SCHEMA_PATH}
 
-build_nodejs_sdk:: gen_nodejs_sdk
-	cd sdk/nodejs/ && \
-		yarn install && \
-		yarn run tsc --version && \
-		yarn run tsc && \
-		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
-		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
-		rm ./bin/package.json.bak
+# build_nodejs_sdk:: gen_nodejs_sdk
+# 	cd sdk/nodejs/ && \
+# 		yarn install && \
+# 		yarn run tsc --version && \
+# 		yarn run tsc && \
+# 		cp ../../README.md ../../LICENSE package.json yarn.lock ./bin/ && \
+# 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json && \
+# 		rm ./bin/package.json.bak
 
-install_nodejs_sdk:: build_nodejs_sdk
-	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
+# install_nodejs_sdk:: build_nodejs_sdk
+# 	yarn link --cwd ${WORKING_DIR}/sdk/nodejs/bin
 
 
 # Python SDK
