@@ -49,5 +49,8 @@ def _construct_dashboard(name: str,
     # Return the component resource's URN and outputs as its state.
     return provider.ConstructResult(
         urn=dashboard.urn,
-        state={}
+        state={
+            "dashboard": dashboard.dashboard,
+            "alert": dashboard.alert
+        }
     )

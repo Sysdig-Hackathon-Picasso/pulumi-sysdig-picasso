@@ -3,14 +3,26 @@
     "resources": {
         "picasso:index:Dashboard": {
             "isComponent": true,
-            "inputProperties": {
-                "indexQuery": {
+            "dashProps": {
+                "conf": {
                     "type": "string",
-                    "description": "The PromQL query."
+                    "description": "The dashboard properties json."
                 }
             },
             "requiredInputs": [
-                "indexQuery"
+                "dashProps"
+            ],
+            "properties": {
+                "dashboard": {
+                    "description": "The dashboard resource."
+                },
+
+                "alert": {
+                    "description": "The alert resource."
+                }
+            },
+            "required": [
+                "dashboard"
             ]
         }
     },

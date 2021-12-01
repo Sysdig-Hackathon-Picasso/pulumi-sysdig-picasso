@@ -16,50 +16,70 @@ import json
 from typing import Optional
 
 from pulumi import Inputs, ResourceOptions
-import pulumi_sysdig as ps 
+import pulumi_sysdig as ps
 import pulumi
 
 
 class DashboardArgs:
 
-    index_query: pulumi.Input[str]
-    """The query."""
+    # dash_props: pulumi.Input[str]
+    # """The properties."""
+
+    dash_props = """
+    {
+        "name": "[P0] NATS Queue Backlog",
+        "description": "This is the alert/dashboard for NATS Queue Backlog",
+        "scope": "kubertnes.cluster.name in prod*",
+        "dashboard":[
+            {
+                "runbook": "# Runbook Title\nThis runbook describes something.",
+                "query": "pippo.pluto",
+                "threashold": "",
+                "unit": "percent"
+            }
+        ],
+        "alert": {
+            "query": "",
+            "duration": "",
+            "channels": [1,2,3],
+            "renotification_minutes": 10,
+            "severity": 4,
+            "trigger_after_minutes": 5,
+        }
+    }
+    """
 
     @staticmethod
     def from_inputs(inputs: Inputs) -> 'DashboardArgs':
-        return DashboardArgs(index_query=inputs['indexQuery'])
+        return DashboardArgs(dash_props=inputs['dashProps'])
 
-    def __init__(self, index_query: pulumi.Input[str]) -> None:
-        self.index_query = index_query
+    def __init__(self, dash_props: pulumi.Input[str]) -> None:
+        self.dash_props = dash_props
 
 
 class Dashboard(pulumi.ComponentResource):
+    dashboard = None
+    alert = None
+
     def __init__(self,
                  name: str,
                  args: DashboardArgs,
                  props: Optional[dict] = None,
                  opts: Optional[ResourceOptions] = None) -> None:
-                 
+
         super().__init__('picasso:index:Dashboard', name, props, opts)
 
-        dashboard_panel_args = [ps.monitor.DashboardPanelArgs(
-            name="testPanel",
-            description="ciao descr",
-            height=15,
-            width=15,
-            pos_x=0,    
-            pos_y=0,
-            transparent_background=True,
-            type="timechart",
-            queries=[ps.monitor.DashboardPanelQueryArgs(
-                promql=args.index_query,
-                unit="percent"
-            )]
-        )]
+        dashProps = json.loads(args.dash_props)
+
+        dashboard_name = self.get_dashboard_name(dashProps["name"])
+        alert_name = dashProps["name"]
+
+        dashboard_panel_args = self.get_dashboard_panel_args(
+            dashProps["dashboard"])
 
         dashboard_args = ps.monitor.DashboardArgs(
-            name="test-picasso",
-            description="testing Magic Picasso",
+            name=dashboard_name,
+            description=dashProps["description"],
             public=False,
             panels=dashboard_panel_args
         )
@@ -67,12 +87,73 @@ class Dashboard(pulumi.ComponentResource):
         # self.dashboard_scope_args = ps.monitor.DashboardScopeArgs
 
         dashboard = ps.monitor.Dashboard(
-            resource_name="test-picasso",
+            resource_name=dashboard_name,  # TODO check what resource name is
             args=dashboard_args,
             scopes=None
         )
 
+        alert_args = ps.monitor.AlertPromqlArgs(
+            enabled=True,
+            name=alert_name,
+            promql=dashProps["alert"]["query"],
+            notification_channels=dashProps["alert"]["channels"],
+            scope=dashProps["scope"],
+            renotification_minutes=dashProps["renotification_minutes"],
+            severity=dashProps["severity"],
+            trigger_after_minutes=dashProps["trigger_after_minutes"]
+
+        )
+        alert = ps.monitor.AlertPromql(
+            resource_name=alert_name,  # TODO check what resource name is
+            args=alert_args
+        )
+
+        self.dashboard = dashboard
+        self.alert = alert
+
         self.register_outputs({
-            # 'bucket': bucket,
-            # 'websiteUrl': bucket.website_endpoint,
+            "dashboard": dashboard,
+            "alert": alert
         })
+
+    @staticmethod
+    def get_dashboard_name(name):
+        return "Alert - " + name
+
+    @staticmethod
+    def get_dashboard_panel_args(dashboard):
+        dash_panels = list()
+        for dash_item in dashboard:
+            runbook = ps.monitor.DashboardPanelArgs(
+                height=5,
+                width=15,
+                pos_x=0,
+                pos_y=0,
+                transparent_background=True,
+                type="text",
+                content=dash_item["runbook"]
+            )
+
+            plot = ps.monitor.DashboardPanelArgs(
+                name="testPanel",
+                description="ciao descr",
+                height=15,
+                width=15,
+                pos_x=0,
+                pos_y=5,
+                type="timechart",
+                queries=[
+                    ps.monitor.DashboardPanelQueryArgs(
+                        promql=dash_item["query"],
+                        unit=dash_item["unit"]
+                    ),
+                    ps.monitor.DashboardPanelQueryArgs(
+                        promql=dash_item["threshold"],
+                        unit=dash_item["unit"]
+                    )
+                ]
+            )
+            dash_panels.append(runbook)
+            dash_panels.append(plot)
+
+        return dash_panels
