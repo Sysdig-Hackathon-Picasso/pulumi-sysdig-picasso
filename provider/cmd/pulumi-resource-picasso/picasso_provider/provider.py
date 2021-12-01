@@ -19,7 +19,7 @@ from pulumi.provider import ConstructResult
 import pulumi.provider as provider
 
 import picasso_provider
-from picasso_provider.staticpage import StaticPage, StaticPageArgs
+from picasso_provider.dashboard import Dashboard, DashboardArgs
 
 
 class Provider(provider.Provider):
@@ -33,23 +33,21 @@ class Provider(provider.Provider):
                   inputs: Inputs,
                   options: Optional[ResourceOptions] = None) -> ConstructResult:
 
-        if resource_type == 'picasso:index:StaticPage':
-            return _construct_static_page(name, inputs, options)
+        if resource_type == 'picasso:index:Dashboard':
+            return _construct_dashboard(name, inputs, options)
 
         raise Exception(f'Unknown resource type {resource_type}')
 
 
-def _construct_static_page(name: str,
+def _construct_dashboard(name: str,
                            inputs: Inputs,
                            options: Optional[ResourceOptions] = None) -> ConstructResult:
 
     # Create the component resource.
-    static_page = StaticPage(name, StaticPageArgs.from_inputs(inputs), dict(inputs), options)
+    dashboard = Dashboard(name, DashboardArgs.from_inputs(inputs), dict(inputs), options)
 
     # Return the component resource's URN and outputs as its state.
     return provider.ConstructResult(
-        urn=static_page.urn,
-        state={
-            'bucket': static_page.bucket,
-            'websiteUrl': static_page.website_url
-        })
+        urn=dashboard.urn,
+        state={}
+    )

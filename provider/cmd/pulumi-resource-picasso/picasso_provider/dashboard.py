@@ -46,13 +46,7 @@ class Dashboard(pulumi.ComponentResource):
         sysdig_monitor_insecure_tls = True
         sysdig_monitor_api_token = "9c0e2d3a-adac-482c-9fc1-11ee2c12f1e5"
 
-        dashabord_args = ps.monitor.DashboardArgs(
-            name="test-picasso",
-            description="testing Magic Picasso",
-            public=True
-        )
-
-        self.dashboard_panel_args = [ps.monitor.DashboardPanelArgs(
+        dashboard_panel_args = [ps.monitor.DashboardPanelArgs(
             name="testPanel",
             description="ciao descr",
             height=15,
@@ -67,12 +61,19 @@ class Dashboard(pulumi.ComponentResource):
             )]
         )]
 
+        dashboard_args = ps.monitor.DashboardArgs(
+            name="test-picasso",
+            description="testing Magic Picasso",
+            public=False,
+            panels=dashboard_panel_args
+        )
+
         # self.dashboard_scope_args = ps.monitor.DashboardScopeArgs
 
-        dashabord = ps.monitor.Dashboard(
-            name="test-picasso"
-            description="testing Magic Picasso"
-
+        dashboard = ps.monitor.Dashboard(
+            resource_name="test-picasso",
+            args=dashboard_args,
+            scopes=None
         )
 
         self.register_outputs({
