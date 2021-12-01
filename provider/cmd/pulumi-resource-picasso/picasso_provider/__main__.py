@@ -15,10 +15,10 @@
 
 import sys
 
+import pulumi
 import pulumi.provider
-import xyz_provider
-import xyz_provider.provider
+import picasso_provider.provider
 
 
 if __name__ == '__main__':
-    pulumi.provider.main(xyz_provider.provider.Provider(), sys.argv[1:])
+    pulumi.provider.main(picasso_provider.provider.Provider(), sys.argv[1:])
