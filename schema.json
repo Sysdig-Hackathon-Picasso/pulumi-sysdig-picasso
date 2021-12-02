@@ -1,7 +1,7 @@
 {
-    "name": "picasso",
+    "name": "sysdig_picasso",
     "resources": {
-        "picasso:index:Dashboard": {
+        "sysdig_picasso:index:Dashboard": {
             "isComponent": true,
             "inputProperties": {
                 "dashProps": {
