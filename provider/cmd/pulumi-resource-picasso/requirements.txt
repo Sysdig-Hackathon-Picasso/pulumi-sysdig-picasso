@@ -1,3 +1,0 @@
-pulumi>=3.0.0
-pulumi_aws>=4.0.0
-pulumi_sysdig @ git+https://github.com/Sysdig-Hackathon-Picasso/pulumi-sysdig.git#subdirectory=sdk/python

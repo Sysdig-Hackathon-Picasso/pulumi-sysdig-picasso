@@ -18,14 +18,14 @@ def _register_module():
             return Module._version
 
         def construct(self, name: str, typ: str, urn: str) -> pulumi.Resource:
-            if typ == "picasso:index:Dashboard":
+            if typ == "sysdig_picasso:index:Dashboard":
                 return Dashboard(name, pulumi.ResourceOptions(urn=urn))
             else:
                 raise Exception(f"unknown resource type {typ}")
 
 
     _module_instance = Module()
-    pulumi.runtime.register_resource_module("picasso", "index", _module_instance)
+    pulumi.runtime.register_resource_module("sysdig_picasso", "index", _module_instance)
 
 
     class Package(pulumi.runtime.ResourcePackage):
@@ -35,11 +35,11 @@ def _register_module():
             return Package._version
 
         def construct_provider(self, name: str, typ: str, urn: str) -> pulumi.ProviderResource:
-            if typ != "pulumi:providers:picasso":
+            if typ != "pulumi:providers:sysdig_picasso":
                 raise Exception(f"unknown provider type {typ}")
             return Provider(name, pulumi.ResourceOptions(urn=urn))
 
 
-    pulumi.runtime.register_resource_package("picasso", Package())
+    pulumi.runtime.register_resource_package("sysdig_picasso", Package())
 
 _register_module()

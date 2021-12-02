@@ -2,7 +2,7 @@ from distutils.core import setup
 import os.path
 
 
-PKG = 'picasso_provider'
+PKG = 'sysdig_picasso_provider'
 
 
 def read_version():
@@ -14,7 +14,7 @@ def read_version():
 setup(
     name=PKG,
     version=read_version(),
-    description='picasso Pulumi Provider',
+    description='sysdig_picasso Pulumi Provider',
     packages=[PKG],
     package_data={PKG: ['py.typed', 'VERSION']},
     zip_safe=False,

@@ -1,16 +1,16 @@
 {
-    "name": "picasso",
+    "name": "sysdig_picasso",
     "resources": {
-        "picasso:index:Dashboard": {
+        "sysdig_picasso:index:Dashboard": {
             "isComponent": true,
             "inputProperties": {
-                "indexQuery": {
+                "dashProps": {
                     "type": "string",
-                    "description": "The PromQL query."
+                    "description": "The dashboard properties json."
                 }
             },
             "requiredInputs": [
-                "indexQuery"
+                "dashProps"
             ]
         }
     },

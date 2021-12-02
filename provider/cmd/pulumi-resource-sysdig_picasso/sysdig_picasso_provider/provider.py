@@ -18,14 +18,14 @@ from pulumi import Inputs, ResourceOptions
 from pulumi.provider import ConstructResult
 import pulumi.provider as provider
 
-import picasso_provider
-from picasso_provider.dashboard import Dashboard, DashboardArgs
+import sysdig_picasso_provider
+from sysdig_picasso_provider.dashboard import Dashboard, DashboardArgs
 
 
 class Provider(provider.Provider):
 
     def __init__(self) -> None:
-        super().__init__(picasso_provider.__version__)
+        super().__init__(sysdig_picasso_provider.__version__)
 
     def construct(self,
                   name: str,
@@ -33,7 +33,7 @@ class Provider(provider.Provider):
                   inputs: Inputs,
                   options: Optional[ResourceOptions] = None) -> ConstructResult:
 
-        if resource_type == 'picasso:index:Dashboard':
+        if resource_type == 'sysdig_picasso:index:Dashboard':
             return _construct_dashboard(name, inputs, options)
 
         raise Exception(f'Unknown resource type {resource_type}')
@@ -49,5 +49,8 @@ def _construct_dashboard(name: str,
     # Return the component resource's URN and outputs as its state.
     return provider.ConstructResult(
         urn=dashboard.urn,
-        state={}
+        state={
+            # "dashboard": dashboard.dashboard,
+            # "alert": dashboard.alert
+        }
     )

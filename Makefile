@@ -1,6 +1,7 @@
 VERSION         := 0.0.1
 
-PACK            := picasso
+PACK            := sysdig_picasso
+PACK2            := sysdig_picasso
 PROJECT         := github.com/pulumi/pulumi-${PACK}
 
 PROVIDER        := pulumi-resource-${PACK}
@@ -23,14 +24,14 @@ build:: build_provider build_python_sdk #build_dotnet_sdk build_nodejs_sdk
 PROVIDER_FILES =  bin/PulumiPlugin.yaml bin/requirements.txt bin/run-provider.py
 PROVIDER_FILES += bin/pulumi-resource-${PACK}.cmd bin/pulumi-resource-${PACK}
 
-build_provider::	bin/venv bin/${PACK}_provider ${PROVIDER_FILES}
+build_provider::	bin/venv bin/${PACK2}_provider ${PROVIDER_FILES}
 
 bin/venv:		${SRC}/requirements.txt
 	rm -rf $@
 	python3 -m venv $@
 	./bin/venv/bin/python -m pip install -r $<
 
-bin/${PACK}_provider:	${SRC}/	${SRC}/${PACK}_provider/VERSION
+bin/${PACK2}_provider:	${SRC}/	${SRC}/${PACK2}_provider/VERSION
 	rm -rf $@
 	./bin/venv/bin/python -m pip install --no-deps provider/cmd/pulumi-resource-${PACK}/ -t bin/
 
@@ -43,8 +44,8 @@ bin/run-provider.py:			${SRC}/run-provider.py
 bin/%:
 	cp -f $< $@
 
-${SRC}/${PACK}_provider/VERSION:
-	echo "${VERSION}" > ${SRC}/${PACK}_provider/VERSION
+${SRC}/${PACK2}_provider/VERSION:
+	echo "${VERSION}" > ${SRC}/${PACK2}_provider/VERSION
 
 # Go SDK
 

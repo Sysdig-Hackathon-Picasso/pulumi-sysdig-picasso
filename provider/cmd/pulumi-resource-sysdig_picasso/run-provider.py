@@ -16,9 +16,9 @@
 import sys
 
 import pulumi.provider
-import picasso_provider
-import picasso_provider.provider
+import sysdig_picasso_provider
+import sysdig_picasso_provider.provider
 
 
 if __name__ == '__main__':
-    pulumi.provider.main(picasso_provider.provider.Provider(), sys.argv[1:])
+    pulumi.provider.main(sysdig_picasso_provider.provider.Provider(), sys.argv[1:])
